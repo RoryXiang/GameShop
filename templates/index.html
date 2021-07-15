@@ -12,41 +12,43 @@
 
 <body>
 
-{% if session.user_name %}
-<div>
-    <a herf="{% url 'users:yue' %}">查询余额</a>
-    <td>您的余额为：</td>
-    <td id="yue"></td>
-    <a herf="{% url 'users:logout' %}">退出登录</a>
     {% if session.user_name %}
-    <td class="pull-right">{{ session.user_name }}</td>
+    <div>
+        <a herf="{% url 'users:yue' %}">查询余额</a>
+        <td>您的余额为：</td>
+        <td id="yue"></td>
+        <a herf="{% url 'users:logout' %}">退出登录</a>
+        {% if session.user_name %}
+        <td class="pull-right">{{ session.user_name }}</td>
+        {% endif %}
+    </div>
+    {% else %}
+    <div>
+        <p class="text-center"><a href="{% url 'users:login' %}">请登录</a></p>
+    </div>
     {% endif %}
-</div>
-{% else %}
-<div>
-<p class="text-center"><a href="{% url 'users:login' %}">请登录</a></p>
-</div>
-{% endif %}
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th><img src="/static/images/games.JPG"></th>
-        <th><img src="/static/images/name.JPG"></th>
-        <th><img src="/static/images/price.JPG"></th>
-        <th><img src="/static/images/purches.JPG"></th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for producct in products %}
-    <tr>
-        <th><img src="/static/images/{{ product.pic_name }}.JPG"></th>
-        <th>{{product.name}}</th>
-        <th>{{product.pprice}}</th>
-        <th><a href="{% url 'products:buy' product_id=product.id %}">购买</a></th>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><img src="/static/images/games.JPG"></th>
+                <th><img src="/static/images/name.JPG"></th>
+                <th><img src="/static/images/price.JPG"></th>
+                <th><img src="/static/images/purches.JPG"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <th><img src="/static/images/{{ product.pic_name }}.JPG"></th>
+                <th>{{ product.name }}</th>
+                <th>{{ product.price }}</th>
+                <th><a
+                        href="{% url 'products:buy' %}?product_id={{ product.id }}">购买</a>
+                </th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 
 </html>

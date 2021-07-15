@@ -4,6 +4,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import User
+from django.urls import reverse
 
 
 def index(request):
@@ -40,19 +41,24 @@ def register(request):
         if form.is_valid():
             # 如果提交数据合法，调用表单的 save 方法将用户数据保存到数据库
             form = form.cleaned_data
+            old_user = User.objects.filter(user_name=form.get("user_name")).first()
+            if old_user:
+                # flash('账号已存在', category='warning')
+                # return redirect(url_for('user.register'))
+                return HttpResponseRedirect(reverse('users:register'))
             user = User(user_name=form.get("user_name"),
                         password=form.get("password"),
                         yue=form.get("yue"))
             user.save()
-
-            if redirect_to:
-                return redirect(redirect_to)
-            else:
-                return render(request, 'index.html')
+            request.session["user_name"] = form.get("user_name")
+            return HttpResponseRedirect(reverse('products:index'))
+            # if redirect_to:
+            #     return redirect(redirect_to)
+            # else:
+            #     return render(request, 'index.html')
     else:
         # 请求不是 POST，表明用户正在访问注册页面，展示一个空的注册表单给用户
         form = Registerform()
-
     # 渲染模板
     # 如果用户正在访问注册页面，则渲染的是一个空的注册表单
     # 如果用户通过表单提交注册信息，但是数据验证不合法，则渲染的是一个带有错误信息的表单
@@ -75,7 +81,7 @@ def login(request):
         else:
             request.session['user_name'] = user_name
             print(user_name)
-            return render(request, 'index.html')
+            return HttpResponseRedirect(reverse('products:index'))
 
 
 # 注销

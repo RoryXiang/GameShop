@@ -1,0 +1,7 @@
+*.csv
+*.pyc
+.idea
+.DS_Store
+logs/
+test/
+__pycache__/
