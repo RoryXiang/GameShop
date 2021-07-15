@@ -11,10 +11,9 @@
 </head>
 
 <body>
-
     {% if session.user_name %}
     <div>
-        <a herf="{% url 'users:yue' %}">查询余额</a>
+        <a id="search">查询余额</a>
         <td>您的余额为：</td>
         <td id="yue"></td>
         <a herf="{% url 'users:logout' %}">退出登录</a>
@@ -39,16 +38,33 @@
         <tbody>
             {% for product in products %}
             <tr>
-                <th><img src="/static/images/{{ product.pic_name }}.JPG"></th>
+                <!-- <th><img src="/static/images/{{ product.pic_name }}.JPG"></th> -->
                 <th>{{ product.name }}</th>
                 <th>{{ product.price }}</th>
-                <th><a
-                        href="{% url 'products:buy' %}?product_id={{ product.id }}">购买</a>
+                <th><a id="buy" data_id='{{ product.id }}'>购买</a>
                 </th>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+<script>
+    $('#buy').click(function () {
+        var pro_id = this.data_id
+        $.ajax({
+            url: "127.0.0.1:8000/products/buy",
+            type: "POST",
+            data: { "product_id": pro_id },
+            dataType: "json",
+            success: function (data) {
+                $('#yue').val(data.yue)
+                alert(data.message)
+            },
+            error: function (data) {
+                alert(data.message)
+            }
+        })
+    })
+</script>
 
 </html>
