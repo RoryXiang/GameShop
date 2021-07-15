@@ -10,11 +10,16 @@ from .models import User
 
 from django import forms
 
-class RegisterForm (forms.Form):
+
+class Registerform(forms.Form):
     user_name = forms.CharField(min_length=8, label="用户名")
     password = forms.CharField(min_length=6, label="密码")
     yue = forms.IntegerField()
 
+
+class Loginform(forms.Form):
+    user_name = forms.CharField(min_length=8, label="用户名")
+    password = forms.CharField(min_length=6, label="密码")
 
 
 # from pydantic import BaseModel

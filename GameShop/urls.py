@@ -29,5 +29,6 @@ urlpatterns = [
     # 别忘记在顶部引入 include 函数
     url(r'^User/', include('User.urls')),
     url(r'^User/', include('django.contrib.auth.urls')),
+    url(r'^products/', include('products.urls')),
     url(r'^$', views.index, name='index')
 ]

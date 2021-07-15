@@ -88,12 +88,13 @@ DATABASES = {
     'default': 
     { 
         'ENGINE': 'django.db.backends.mysql',    # 数据库引擎
-        'NAME': 'db_shop', # 数据库名称
-        'HOST': '127.0.0.1', # 数据库地址，本机 ip 地址 127.0.0.1 
-        'PORT': 3306, # 端口 
+        'NAME': 'db_shop',  # 数据库名称
+        'HOST': '127.0.0.1',  # 数据库地址，本机 ip 地址 127.0.0.1
+        'PORT': 3306,  # 端口
         'USER': 'root',  # 数据库用户名
-        'PASSWORD': 'root1234', # 数据库密码
-    }  
+        'PASSWORD': 'Wanmei328116!',  # 数据库密码
+        # 'PASSWORD': 'root1234',  # 数据库密码
+    }
 }
 
 
@@ -134,7 +135,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static').replace('\\', '/')
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

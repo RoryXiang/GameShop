@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+
 class Products(models.Model):
     # identifier = models.CharField(max_length=40, unique=True)
     USERNAME_FIELD = 'identifier'
@@ -10,7 +11,7 @@ class Products(models.Model):
     price = models.FloatField()
 
     def __str__(self):
-        return self.username
+        return self.name
     
     # class Meta(AbstractUser.Meta):
     #     pass

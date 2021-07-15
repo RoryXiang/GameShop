@@ -1,17 +1,18 @@
 from django.shortcuts import render
-from .forms import RegisterForm
-# Create your views here.
-from django.shortcuts import render,HttpResponseRedirect
+from .forms import Registerform, Loginform
+from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import User
-# Create your views here.
+
 
 def index(request):
-    user = request.session.get('user',False)
+    user = request.session.get('user', False)
 
-    return render(request,'index.html',{'user':user})
-#显示页面
+    return render(request, 'index.html', {'user': user})
+# 显示页面
+
+
 def registerView(request):
     user = request.session.get('user', False)
     print(user)
@@ -19,20 +20,6 @@ def registerView(request):
         return render(request, 'login.html')
     else :
         return HttpResponseRedirect('/index/')
-
-#注册
-# def register(request):
-#     check = False
-#     if request.method == 'POST':
-#         form = FUser(request.POST)
-#         if form.is_valid():
-#             #print(form.cleaned_data)
-#             user = User(**form.cleaned_data)
-#             user.save()
-#             check = True
-#             return render(request, 'app01/immediate.html',{'check':check})
-
-#     return HttpResponseRedirect('/index/')
 
 
 def register(request):
@@ -46,7 +33,7 @@ def register(request):
         # request.POST 是一个类字典数据结构，记录了用户提交的注册信息
         # 这里提交的就是用户名（username）、密码（password）、确认密码、邮箱（email）
         # 用这些数据实例化一个用户注册表单
-        form = RegisterForm(request.POST)
+        form = Registerform(request.POST)
 
         # 验证数据的合法性
         print("---- ", form.is_valid)
@@ -54,17 +41,17 @@ def register(request):
             # 如果提交数据合法，调用表单的 save 方法将用户数据保存到数据库
             form = form.cleaned_data
             user = User(user_name=form.get("user_name"),
-                    password=form.get("password"),
-                    yue=form.get("yue"))
+                        password=form.get("password"),
+                        yue=form.get("yue"))
             user.save()
 
             if redirect_to:
                 return redirect(redirect_to)
             else:
-                return redirect('/')
+                return render(request, 'index.html')
     else:
         # 请求不是 POST，表明用户正在访问注册页面，展示一个空的注册表单给用户
-        form = RegisterForm()
+        form = Registerform()
 
     # 渲染模板
     # 如果用户正在访问注册页面，则渲染的是一个空的注册表单
@@ -73,21 +60,30 @@ def register(request):
     return render(request, 'users/register.html', context={'form': form, 'next': redirect_to})
 
 
-#登录
+# 登录
 def login(request):
+    if request.method == "GET":
+        form = Loginform()
+        return render(request, 'users/login.html', context={'form': form})
+    else:
+        user_name = request.POST['user_name']
+        password = request.POST['password']
+        result = User.objects.get(user_name=user_name, password=password)
 
-    user = request.POST['user_name']
-    password = request.POST['password']
-    result = User.objects.get(user_name=user,password=password)
+        if not result:
+            return render(request, 'users/login.html')
+        else:
+            request.session['user_name'] = user_name
+            print(user_name)
+            return render(request, 'index.html')
 
-    if not result:
-        return HttpResponseRedirect('/registerView/')
-    else :
-       request.session['user'] = user
-       return HttpResponseRedirect('/index/')
 
-#注销
+# 注销
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/index/')
+
+
+def yue(request):
+    pass
 
