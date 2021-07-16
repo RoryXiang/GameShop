@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'utils.csrfTokenMiddleware.CsrfTokenMiddleware',
 ]
 
 ROOT_URLCONF = 'GameShop.urls'
@@ -92,8 +93,8 @@ DATABASES = {
         'HOST': '127.0.0.1',  # 数据库地址，本机 ip 地址 127.0.0.1
         'PORT': 3306,  # 端口
         'USER': 'root',  # 数据库用户名
-        # 'PASSWORD': 'Wanmei328116!',  # 数据库密码
-        'PASSWORD': 'root1234',  # 数据库密码
+        'PASSWORD': 'Wanmei328116!',  # 数据库密码
+        # 'PASSWORD': 'root1234',  # 数据库密码
     }
 }
 

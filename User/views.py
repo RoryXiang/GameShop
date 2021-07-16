@@ -80,7 +80,6 @@ def login(request):
             return render(request, 'users/login.html')
         else:
             request.session['user_name'] = user_name
-            print(user_name)
             return HttpResponseRedirect(reverse('products:index'))
 
 

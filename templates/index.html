@@ -8,6 +8,7 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>首页</title>
     <link rel="stylesheet" href="https://unpkg.com/mobi.css/dist/mobi.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
 </head>
 
 <body>
@@ -36,12 +37,13 @@
             </tr>
         </thead>
         <tbody>
+            {% csrf_token %}
             {% for product in products %}
             <tr>
-                <!-- <th><img src="/static/images/{{ product.pic_name }}.JPG"></th> -->
+                 <th><img src="/static/images/{{ product.pic_name }}.JPG"></th>
                 <th>{{ product.name }}</th>
                 <th>{{ product.price }}</th>
-                <th><a id="buy" data_id='{{ product.id }}'>购买</a>
+                <th><a id="buy" data_name={{ product.name }}>购买</a>
                 </th>
             </tr>
             {% endfor %}
@@ -50,11 +52,11 @@
 </body>
 <script>
     $('#buy').click(function () {
-        var pro_id = this.data_id
+        var pro_name = $('#buy').attr('data_name')
         $.ajax({
-            url: "127.0.0.1:8000/products/buy",
-            type: "POST",
-            data: { "product_id": pro_id },
+            url: "http://127.0.0.1:8000/products/buy?product_name={{ pro_name }}",
+            type: "GET",
+            data: { "product_name": pro_name },
             dataType: "json",
             success: function (data) {
                 $('#yue').val(data.yue)

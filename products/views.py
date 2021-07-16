@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # from .forms import Registerform, Loginform
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import Products
@@ -10,15 +10,18 @@ from .models import Products
 from User.models import User
 
 
-def buy(request, product_id):
+def buy(request):
+    product_name = request.GET.get("product_name")
+    print(product_name)
     user_name = request.session.get("user_name")
     user = User.objects.filter(user_name=user_name).first()
-    product = Products.objects.filter(id=product_id)
+    product = Products.objects.filter(name=product_name).first()
     if int(user.yue) < int(product.price):
         return {"code": 444, "message": "购买失败"}
     user.yue -= product.price
     user.save()
-    return {"code": 200, "message": "购买成功", "yue": user.yue - product.price}
+    data = {"code": 200, "message": "购买成功", "yue": user.yue - product.price}
+    return HttpResponse(json.dumps(data))
 
 
 def index(request):

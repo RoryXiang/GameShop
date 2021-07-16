@@ -11,7 +11,7 @@ class User(models.Model):
     yue = models.FloatField()
 
     def __str__(self):
-        return self.username
+        return self.user_name
     
     # class Meta(AbstractUser.Meta):
     #     pass
