@@ -12,15 +12,13 @@
 </head>
 
 <body>
-    {% if session.user_name %}
+    {% if request.session.user_name %}
     <div>
         <a id="search">查询余额</a>
         <td>您的余额为：</td>
         <td id="yue"></td>
         <a herf="{% url 'users:logout' %}">退出登录</a>
-        {% if session.user_name %}
-        <td class="pull-right">{{ session.user_name }}</td>
-        {% endif %}
+        <td id="user" class="pull-right">{{ request.session.user_name }}</td>
     </div>
     {% else %}
     <div>
@@ -52,6 +50,7 @@
 </body>
 <script>
     $('#buy').click(function () {
+        alert(request.session.user_name)
         var pro_name = $('#buy').attr('data_name')
         $.ajax({
             url: "http://127.0.0.1:8000/products/buy?product_name={{ pro_name }}",
@@ -61,6 +60,21 @@
             success: function (data) {
                 $('#yue').val(data.yue)
                 alert(data.message)
+            },
+            error: function (data) {
+                alert(data.message)
+            }
+        })
+    })
+    $('#search').click(function () {
+        var user_name = $('#user').val()
+        $.ajax({
+            url: "http://127.0.0.1:8000/users/yue?user_name={{ user_name }}",
+            type: "GET",
+            data: { "user_name": user_name },
+            dataType: "json",
+            success: function (data) {
+                $('#yue').val(data.yue)
             },
             error: function (data) {
                 alert(data.message)

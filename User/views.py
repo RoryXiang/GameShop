@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from .forms import Registerform, Loginform
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import User
 from django.urls import reverse
+import json
 
 
 def index(request):
@@ -90,5 +91,9 @@ def logout(request):
 
 
 def yue(request):
+    user_name = request.session.get("user_name")
+    user = User.objects.filter(user_name=user_name).first()
+    data = {"code": 200, "message": "购买成功", "yue": user.yue}
+    return HttpResponse(json.dumps(data))
     pass
 
