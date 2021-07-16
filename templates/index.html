@@ -16,9 +16,9 @@
     <div>
         <a id="search">查询余额</a>
         <td>您的余额为：</td>
-        <td id="yue"></td>
-        <a herf="{% url 'users:logout' %}">退出登录</a>
-        <td id="user" class="pull-right">{{ request.session.user_name }}</td>
+        <a id="yue">*</a>
+        <a id="logout">退出登录</a>
+        <a id="user" class="pull-right" user_name={{ request.session.user_name }}>{{ request.session.user_name }}</a>
     </div>
     {% else %}
     <div>
@@ -49,6 +49,7 @@
     </table>
 </body>
 <script>
+<!--    # 购买商品-->
     $('#buy').click(function () {
         alert(request.session.user_name)
         var pro_name = $('#buy').attr('data_name')
@@ -66,15 +67,30 @@
             }
         })
     })
+<!--    # 查询余额-->
     $('#search').click(function () {
-        var user_name = $('#user').val()
+        var user_name = $('#user').attr('user_name')
         $.ajax({
-            url: "http://127.0.0.1:8000/users/yue?user_name={{ user_name }}",
+            url: "http://127.0.0.1:8000/User/yue?user_name={{ user_name }}",
             type: "GET",
             data: { "user_name": user_name },
             dataType: "json",
             success: function (data) {
-                $('#yue').val(data.yue)
+                $('#yue').text(data.yue)
+            },
+            error: function (data) {
+                alert(data.message)
+            }
+        })
+    })
+<!--    # 退出登录-->
+    $('#logout').click(function () {
+        $.ajax({
+            url: "http://127.0.0.1:8000/User/logout",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $(this).attr('href', ''http://127.0.0.1:8000/User/login)
             },
             error: function (data) {
                 alert(data.message)

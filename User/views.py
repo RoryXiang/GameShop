@@ -86,8 +86,8 @@ def login(request):
 
 # 注销
 def logout(request):
-    auth.logout(request)
-    return HttpResponseRedirect('/index/')
+    request.session.pop("user_name")
+    return HttpResponseRedirect('users:login')
 
 
 def yue(request):
@@ -95,5 +95,4 @@ def yue(request):
     user = User.objects.filter(user_name=user_name).first()
     data = {"code": 200, "message": "购买成功", "yue": user.yue}
     return HttpResponse(json.dumps(data))
-    pass
 
