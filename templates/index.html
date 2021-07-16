@@ -49,9 +49,7 @@
     </table>
 </body>
 <script>
-<!--    # 购买商品-->
     $('#buy').click(function () {
-        alert(request.session.user_name)
         var pro_name = $('#buy').attr('data_name')
         $.ajax({
             url: "http://127.0.0.1:8000/products/buy?product_name={{ pro_name }}",
@@ -67,7 +65,6 @@
             }
         })
     })
-<!--    # 查询余额-->
     $('#search').click(function () {
         var user_name = $('#user').attr('user_name')
         $.ajax({
@@ -83,14 +80,13 @@
             }
         })
     })
-<!--    # 退出登录-->
     $('#logout').click(function () {
         $.ajax({
             url: "http://127.0.0.1:8000/User/logout",
             type: "GET",
             dataType: "json",
             success: function (data) {
-                $(this).attr('href', ''http://127.0.0.1:8000/User/login)
+                $(this).attr('href', 'http://127.0.0.1:8000/User/login')
             },
             error: function (data) {
                 alert(data.message)
